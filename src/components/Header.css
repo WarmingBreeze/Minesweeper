@@ -2,3 +2,10 @@
     height:10vh;
     background-color: #8D7B68;
 }
+
+@media (max-height: 650px) {
+    .header{
+        height: 5vh;
+    }
+    
+}

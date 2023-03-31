@@ -2,9 +2,6 @@ import Cell from './Cell.jsx';
 import './Board.css';
 
 export default function Board({level}){
-    const vWidth = window.innerWidth;
-    const vHeight = window.innerHeight;
-    let numOfCells;
     let row;
     let col;
     let tagsHor = [];
@@ -12,12 +9,15 @@ export default function Board({level}){
     
     
     if (level === 'easy') {
-        numOfCells = 80;
+        row = 8;
+        col = 10;
         
     } else if (level === 'medium') {
-        numOfCells = 252;
+        row = 14;
+        col = 18;
     } else {
-        numOfCells = 480;
+        row = 20;
+        col = 24;
     }
     for (var i=0; i<col; i++) {
         tagsHor.push(<Cell key={i}/>);
@@ -28,7 +28,7 @@ export default function Board({level}){
 
     return (
         <div className='board'>
-            {tagsVer}
+            <Cell/>
         </div>
     )
 }
