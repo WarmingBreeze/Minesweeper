@@ -2,11 +2,14 @@ import Cell from './Cell.jsx';
 import './Board.css';
 
 export default function Board({level}){
+    const vWidth = window.innerWidth;
+    const vHeight = window.innerHeight;
     let numOfCells;
     let row;
     let col;
     let tagsHor = [];
     let tagsVer = [];
+    
     
     if (level === 'easy') {
         numOfCells = 80;

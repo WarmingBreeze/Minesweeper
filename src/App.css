@@ -4,7 +4,7 @@
 
 @media (max-width: 500px) {
     #main {
-        width:90%;
+        width:90%; /* less than 450px */
         padding:10% 0 0 0;
     }
     
@@ -12,7 +12,7 @@
 
 @media (min-width: 501px) and (max-width:950px) {
     #main {
-        width: 85%;
+        width: 85%; /* 425px ~ 665px */
         padding:10% 0 0 0; 
     }
     
@@ -20,7 +20,7 @@
 
 @media (min-width: 951px) {
     #main {
-        width: 70%;
+        width: 70%; /* at least 665px */
         padding:5% 0 0 0;
     }
     
