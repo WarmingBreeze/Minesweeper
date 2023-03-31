@@ -28,7 +28,9 @@ export default function Board({level}){
 
     return (
         <div className='board'>
-            <Cell/>
+            <Cell
+
+            />
         </div>
     )
 }

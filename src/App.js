@@ -22,7 +22,7 @@ function App() {
   if (level === 'easy'){
     mines = randomMines(10, 1, 80);
   } else if (level === 'medium'){
-    mines = randomMines(40, 1,252);
+    mines = randomMines(40, 1, 252);
   } else {
     mines = randomMines(99, 1, 480);
   } 
