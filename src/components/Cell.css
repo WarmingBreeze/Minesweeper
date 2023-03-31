@@ -1,8 +1,11 @@
 .cell {
-    background-color: #A5F1E9;
+    background-color: #ABC4AA;
+    /* background-image: url('../../public/red-flag.png');
+    background-size: 100% 100%; */
     width: 30px;
     height: 30px;
     display: inline-block;
+    outline: outset;
 }
 
 .cell:hover {
