@@ -1,17 +1,14 @@
 import Cell from './Cell.jsx';
 import './Board.css';
 
-export default function Board({level}){
+export default function Board({level, mines}){
     let row;
     let col;
-    let tagsHor = [];
-    let tagsVer = [];
-    
+    let numberedBoard = [' '];
     
     if (level === 'easy') {
         row = 8;
-        col = 10;
-        
+        col = 10;        
     } else if (level === 'medium') {
         row = 14;
         col = 18;
@@ -19,18 +16,33 @@ export default function Board({level}){
         row = 20;
         col = 24;
     }
-    for (var i=0; i<col; i++) {
-        tagsHor.push(<Cell key={i}/>);
-    }
-    for (var j=0; j<row; j++) {
-        tagsVer.push(<div className='board-row'>{tagsHor}</div>);
+
+    function numToCoordinate(num){
+        if (num%col == 0){
+            const numRow = num/col;
+            const numCol = col;
+        } else {
+            const numRow = Math.floor(num/col)+1;
+            const numCol = num%col;
+        }
+        return [numRow, numCol];
     }
 
+    function coordinateToNum([corRow, corCol]){
+        return (corRow-1)*col+corCol;
+    }
+
+    for (i=1; i<=row*col; i++) {
+        if (mines.includes(i)) {
+            numberedBoard[i] = 'm';
+        } else {
+            const [targetRow, targetCol] = numToCoordinate(i);
+            if (targetRow-1 > 0 )
+        }
+    }
     return (
         <div className='board'>
-            <Cell
-
-            />
+            <Cell/>
         </div>
     )
 }

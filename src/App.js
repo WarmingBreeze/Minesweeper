@@ -42,6 +42,7 @@ function App() {
       />
       <Board
         level={level}
+        mines={mines}
       />
     </div>
   );
