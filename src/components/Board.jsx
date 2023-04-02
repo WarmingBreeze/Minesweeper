@@ -4,17 +4,21 @@ import './Board.css';
 export default function Board({level, mines}){
     let row;
     let col;
+    let boardWidth;
     let numberedBoard = [' ']; //first item just a placeholder
     
     if (level === 'easy') {
         row = 8;
-        col = 10;        
+        col = 10;
+        boardWidth = '300px';        
     } else if (level === 'medium') {
         row = 14;
         col = 18;
+        boardWidth = '540px';
     } else {
         row = 20;
         col = 24;
+        boardWidth = '720px';
     }
 
     function numToCoordinate(num){
@@ -119,8 +123,14 @@ export default function Board({level, mines}){
     console.log(numberedBoard);
 
     return (
-        <div className='board'>
-            <Cell/>
+        <div className='board' style={{width: boardWidth}}>
+            {numberedBoard.map((value, index) => {
+                if (index !== 0) {
+                    return (
+                    <Cell key={index} id={index} value={value}/>
+                    );
+                }
+            })}
         </div>
     )
 }

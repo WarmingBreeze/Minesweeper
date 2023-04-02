@@ -1,6 +1,11 @@
 .header {
+    text-align: center;
+    margin: auto;
     height:10vh;
     background-color: #8D7B68;
+    outline: solid;
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 @media (max-height: 650px) {

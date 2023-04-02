@@ -1,19 +1,27 @@
 
 import './Header.css';
 
-export default function Header({difficulty}){
-    
+export default function Header({difficulty, level}){
+    let headerWidth;
+    if (level === 'easy'){
+        headerWidth = '300px';
+    } else if (level === 'medium'){
+        headerWidth = '540px';
+    } else {
+        headerWidth = '720px';
+    }
+
     function handleClick(e){
-        const vWidth = window.innerWidth;
-        const vHeight = window.innerHeight;
-        alert(`Current viewport width: ${vWidth}
-        Current viewport height: ${vHeight}`);
+        // const vWidth = window.innerWidth;
+        // const vHeight = window.innerHeight;
+        // alert(`Current viewport width: ${vWidth}
+        // Current viewport height: ${vHeight}`);
     }
 
     
 
     return (
-        <div className='header'>
+        <div className='header' style={{width: headerWidth}}>
             <select name='difficulty' onChange={(e)=>difficulty(e)}>
                 <option value='easy'>Easy</option>
                 <option value='medium'>Medium</option>

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './Cell.css';
 import redFlagImage from '../images/red-flag.png';
 
-export default function Cell({id}){
+export default function Cell({id, value}){
     const [isMarked, setIsMarked] = useState(false);
     
     function handleRightClick(e){

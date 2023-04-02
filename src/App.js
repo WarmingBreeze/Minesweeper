@@ -39,6 +39,7 @@ function App() {
     <div id="main">
       <Header
         difficulty={handleDifficulty}
+        level={level}
       />
       <Board
         level={level}
