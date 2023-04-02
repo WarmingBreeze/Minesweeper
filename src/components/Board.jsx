@@ -4,7 +4,7 @@ import './Board.css';
 export default function Board({level, mines}){
     let row;
     let col;
-    let numberedBoard = [' '];
+    let numberedBoard = [' ']; //first item just a placeholder
     
     if (level === 'easy') {
         row = 8;
@@ -33,6 +33,14 @@ export default function Board({level, mines}){
     function coordinateToNum([corRow, corCol]){
         return (corRow-1)*col+corCol;
     }
+
+    function surroundBombCounter([corRow, corCol]){
+        if (mines.includes(coordinateToNum([corRow, corCol]))){
+            return 1;
+        } else {
+            return 0;
+        }
+    }
     
     for (let i=1; i<=row*col; i++) {
         if (mines.includes(i)) {
@@ -43,141 +51,61 @@ export default function Board({level, mines}){
             let count = 0;
             //the top left cell
             if (targetRow-1 === 0 && targetCol-1 === 0){
-                if (mines.includes(coordinateToNum([targetRow, targetCol+1]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow+1, targetCol]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow+1, targetCol+1]))){
-                    count++;
-                }
+                count += surroundBombCounter([targetRow, targetCol+1]);
+                count += surroundBombCounter([targetRow+1, targetCol]);
+                count += surroundBombCounter([targetRow+1, targetCol+1]);
             //the top right cell
             } else if (targetRow-1 === 0 && targetCol+1 > col){
-                if (mines.includes(coordinateToNum([targetRow, targetCol-1]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow+1, targetCol-1]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow+1, targetCol]))){
-                    count++;
-                }
+                count += surroundBombCounter([targetRow, targetCol-1]);
+                count += surroundBombCounter([targetRow+1, targetCol-1]);
+                count += surroundBombCounter([targetRow+1, targetCol]);
             //bottom-left
             } else if (targetCol-1 ===0 && targetRow+1 > row){
-                if (mines.includes(coordinateToNum([targetRow-1, targetCol]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow-1, targetCol+1]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow, targetCol+1]))){
-                    count++;
-                }
+                count += surroundBombCounter([targetRow-1, targetCol]);
+                count += surroundBombCounter([targetRow-1, targetCol+1]);
+                count += surroundBombCounter([targetRow, targetCol+1]);
             //bottom-right
-            } else if (targetCol+1 > col && targetRow+1 > row){ 
-                if (mines.includes(coordinateToNum([targetRow-1, targetCol-1]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow-1, targetCol]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow, targetCol-1]))){
-                    count++;
-                }
+            } else if (targetCol+1 > col && targetRow+1 > row){
+                count += surroundBombCounter([targetRow-1, targetCol-1]);
+                count += surroundBombCounter([targetRow-1, targetCol]);
+                count += surroundBombCounter([targetRow, targetCol-1]); 
             //top row excluding the corner ones
-            } else if (targetRow-1 === 0){ 
-                if (mines.includes(coordinateToNum([targetRow, targetCol+1]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow+1, targetCol]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow+1, targetCol+1]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow, targetCol-1]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow+1, targetCol-1]))){
-                    count++;
-                }
+            } else if (targetRow-1 === 0){
+                count += surroundBombCounter([targetRow, targetCol+1]);
+                count += surroundBombCounter([targetRow+1, targetCol]);
+                count += surroundBombCounter([targetRow+1, targetCol+1]);
+                count += surroundBombCounter([targetRow, targetCol-1]);
+                count += surroundBombCounter([targetRow+1, targetCol-1]); 
             //the first col excluding corner ones
             } else if (targetCol-1 === 0){
-                if (mines.includes(coordinateToNum([targetRow, targetCol+1]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow+1, targetCol]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow+1, targetCol+1]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow-1, targetCol]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow-1, targetCol+1]))){
-                    count++;
-                }
+                count += surroundBombCounter([targetRow, targetCol+1]);
+                count += surroundBombCounter([targetRow+1, targetCol]);
+                count += surroundBombCounter([targetRow+1, targetCol+1]);
+                count += surroundBombCounter([targetRow-1, targetCol]);
+                count += surroundBombCounter([targetRow-1, targetCol+1]);
             //last col excluding corners
             } else if (targetCol+1 > col){
-                if (mines.includes(coordinateToNum([targetRow, targetCol-1]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow+1, targetCol-1]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow+1, targetCol]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow-1, targetCol-1]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow-1, targetCol]))){
-                    count++;
-                }
+                count += surroundBombCounter([targetRow, targetCol-1]);
+                count += surroundBombCounter([targetRow+1, targetCol-1]);
+                count += surroundBombCounter([targetRow+1, targetCol]);
+                count += surroundBombCounter([targetRow-1, targetCol-1]);
+                count += surroundBombCounter([targetRow-1, targetCol]);
             //last row excluding corner ones
             } else if (targetRow+1 > row){
-                if (mines.includes(coordinateToNum([targetRow-1, targetCol]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow-1, targetCol+1]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow, targetCol+1]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow-1, targetCol-1]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow, targetCol-1]))){
-                    count++;
-                }
+                count += surroundBombCounter([targetRow-1, targetCol]);
+                count += surroundBombCounter([targetRow-1, targetCol+1]);
+                count += surroundBombCounter([targetRow, targetCol+1]);
+                count += surroundBombCounter([targetRow-1, targetCol-1]);
+                count += surroundBombCounter([targetRow, targetCol-1]);
             } else {
-                if (mines.includes(coordinateToNum([targetRow, targetCol+1]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow+1, targetCol]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow+1, targetCol+1]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow-1, targetCol]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow-1, targetCol+1]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow, targetCol-1]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow+1, targetCol-1]))){
-                    count++;
-                }
-                if (mines.includes(coordinateToNum([targetRow-1, targetCol-1]))){
-                    count++;
-                }
+                count += surroundBombCounter([targetRow, targetCol+1]);
+                count += surroundBombCounter([targetRow+1, targetCol]);
+                count += surroundBombCounter([targetRow+1, targetCol+1]);
+                count += surroundBombCounter([targetRow-1, targetCol]);
+                count += surroundBombCounter([targetRow-1, targetCol+1]);
+                count += surroundBombCounter([targetRow, targetCol-1]);
+                count += surroundBombCounter([targetRow+1, targetCol-1]);
+                count += surroundBombCounter([targetRow-1, targetCol-1]);
             }
 
             if (count === 0){
