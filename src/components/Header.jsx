@@ -12,10 +12,7 @@ export default function Header({difficulty, level}){
     }
 
     function handleClick(e){
-        // const vWidth = window.innerWidth;
-        // const vHeight = window.innerHeight;
-        // alert(`Current viewport width: ${vWidth}
-        // Current viewport height: ${vHeight}`);
+        
     }
 
     

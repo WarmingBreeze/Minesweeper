@@ -34,7 +34,7 @@ function App() {
       setLevel(value);
     }
   }
-
+  console.log(mines);
   return (
     <div id="main">
       <Header

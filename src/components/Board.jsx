@@ -122,12 +122,16 @@ export default function Board({level, mines}){
 
     console.log(numberedBoard);
 
+    function blankArea (id){
+        console.log('blank cell got clicked!');
+    }
+
     return (
         <div className='board' style={{width: boardWidth}}>
             {numberedBoard.map((value, index) => {
                 if (index !== 0) {
                     return (
-                    <Cell key={index} id={index} value={value}/>
+                    <Cell key={index} id={index} value={value} onBlank={blankArea}/>
                     );
                 }
             })}
