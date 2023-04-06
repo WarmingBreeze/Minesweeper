@@ -11,9 +11,13 @@ function App() {
   //generate random numbers to decide which cells hold mines
   function randomMines(n, min, max){
     const randomNums = [];
-    for (let i=0; i<n; i++){
+    let i = 0;
+    while (i < n){
       const randomNum = Math.floor(Math.random()*(max - min + 1)) + min;
-      randomNums.push(randomNum);
+      if (!(randomNums.includes(randomNum))){
+        randomNums.push(randomNum);
+        i++;
+      }
     }
     return randomNums;
   }
@@ -34,7 +38,7 @@ function App() {
       setLevel(value);
     }
   }
-  console.log(mines);
+  
   return (
     <div id="main">
       <Header

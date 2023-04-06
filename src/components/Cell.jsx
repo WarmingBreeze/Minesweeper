@@ -11,7 +11,7 @@ import six from '../images/numbers/number-6.png';
 import seven from '../images/numbers/number-7.png';
 import eight from '../images/numbers/number-8.png';
 
-export default function Cell({id, value, onBlank}){
+export default function Cell({id, value, onBlank, style}){
     const [rightClicked, setRightClicked] = useState(false);
     const [leftClicked, setLeftClicked] = useState(false);
     const [displayImage, setDisplayImage] = useState(null);
@@ -93,7 +93,7 @@ export default function Cell({id, value, onBlank}){
             className='cell'
             onContextMenu={handleRightClick}
             onClick={handleLeftClick}
-            style={displayImage}
+            style={value === 'b'? style: displayImage}
         >
         </div>
     )
