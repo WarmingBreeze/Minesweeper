@@ -1,6 +1,6 @@
 import Cell from './Cell.jsx';
 import './Board.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import one from '../images/numbers/number-1.png';
 import two from '../images/numbers/number-2.png';
 import three from '../images/numbers/number-3.png';
@@ -13,6 +13,11 @@ import eight from '../images/numbers/number-8.png';
 export default function Board({level, mines}){
     const [blankArray, setBlankArray] = useState([]);
     const [numberArray, setNumberArray] = useState([]);
+
+    useEffect(() => {
+        setBlankArray([]);
+        setNumberArray([]);
+    }, [level]);
 
     let row;
     let col;
@@ -309,6 +314,7 @@ export default function Board({level, mines}){
                             style={{backgroundColor: `#F3DEBA`}}
                             numberStyle={numberedCell}
                             revealed={true}
+                            level={level}
                         /> 
                     );
                 } else if (numberArray.includes(index)){
@@ -321,6 +327,7 @@ export default function Board({level, mines}){
                             style={numberedCell(value, (obj) => obj)}
                             numberStyle={numberedCell}
                             revealed={true}
+                            level={level}
                         />
                     );
                 } else if (index !== 0) {
@@ -332,6 +339,7 @@ export default function Board({level, mines}){
                             onBlank={blankArea}
                             numberStyle={numberedCell}
                             revealed={false}
+                            level={level}
                         />
                     );
                 } else {

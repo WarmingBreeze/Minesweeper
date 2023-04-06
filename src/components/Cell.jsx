@@ -1,13 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './Cell.css';
 import redFlagImage from '../images/red-flag.png';
 import explosion from '../images/mine.png';
 
 
-export default function Cell({id, value, onBlank, style, numberStyle, revealed}){
+export default function Cell({id, value, onBlank, style, numberStyle, revealed,level}){
     const [rightClicked, setRightClicked] = useState(false);
     const [leftClicked, setLeftClicked] = useState(false);
     const [displayImage, setDisplayImage] = useState(null);
+
+    useEffect(() => {
+        setRightClicked(false);
+        setLeftClicked(false);
+        setDisplayImage(null);
+    }, [level]);
     
     function handleRightClick(e){
         e.preventDefault();

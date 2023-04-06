@@ -2,8 +2,3 @@
     margin:auto;
     text-align: center;
 }
-
-.board-row {
-    clear: right;
-    height:30px;
-}
