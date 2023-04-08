@@ -9,15 +9,51 @@ import five from '../images/numbers/number-5.png';
 import six from '../images/numbers/number-6.png';
 import seven from '../images/numbers/number-7.png';
 import eight from '../images/numbers/number-8.png';
+import explosion from '../images/mine.png';
 
-export default function Board({level, mines}){
+export default function Board({level, mines, totalCells}){
     const [blankArray, setBlankArray] = useState([]);
     const [numberArray, setNumberArray] = useState([]);
+    const [mineArray, setMineArray] = useState([]);
+    const [clickableArray, setClickableArray] = useState(() => {
+        let temp = [];
+        for (let i=1; i<=totalCells; i++){
+            if (!(mines.includes(i))){
+                temp.push(i);
+            }
+        }
+        return temp;
+    });
+    const [clickable, setClickable] = useState(true);
 
     useEffect(() => {
         setBlankArray([]);
         setNumberArray([]);
-    }, [level]);
+        setMineArray([]);
+        setClickable(true);
+        setClickableArray(() => {
+            let temp = [];
+            for (let i=1; i<=totalCells; i++){
+                if (!(mines.includes(i))){
+                    temp.push(i);
+                }
+            }
+            return temp;
+        })
+        setClickable(true);
+    }, [level, totalCells, mines]);
+
+    useEffect(() =>{
+        setClickableArray((array) => array.filter((item)=> ![...blankArray, ...numberArray].includes(item)));
+    },[blankArray, numberArray]);
+
+    useEffect(()=>{
+        if (clickableArray.length === 0) {
+            gameSuccess();
+        }
+    },[clickableArray]);
+
+    console.log(clickableArray);
 
     let row;
     let col;
@@ -37,6 +73,22 @@ export default function Board({level, mines}){
         col = 24;
         boardWidth = '720px';
     }
+
+    for (let i=1; i<=row*col; i++) {
+        if (mines.includes(i)) {
+            numberedBoard[i] = 'm';
+        } else {
+            //turn each numbered cell into coordinates
+            const [targetRow, targetCol] = numToCoordinate(i);
+            let count = boardInspector(mines, [targetRow, targetCol], surroundingCounter);
+            if (count === 0){
+                numberedBoard[i] = 'b';
+            } else {
+                numberedBoard[i] = count;
+            }
+        }
+    }
+    
 
     function numToCoordinate(num){
         let numRow, numCol;
@@ -127,21 +179,6 @@ export default function Board({level, mines}){
             count += func(array,[corRow-1, corCol-1]);
         }
         return count;
-    }
-    
-    for (let i=1; i<=row*col; i++) {
-        if (mines.includes(i)) {
-            numberedBoard[i] = 'm';
-        } else {
-            //turn each numbered cell into coordinates
-            const [targetRow, targetCol] = numToCoordinate(i);
-            let count = boardInspector(mines, [targetRow, targetCol], surroundingCounter);
-            if (count === 0){
-                numberedBoard[i] = 'b';
-            } else {
-                numberedBoard[i] = count;
-            }
-        }
     }
 
     //Check if the cell is a blank one
@@ -235,28 +272,28 @@ export default function Board({level, mines}){
             const [blankRow, blankCol] = numToCoordinate(blankCells[j]);
             //top-left
             if (blankRow-1 === 0 && blankCol-1 === 0){
-                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow, blankCol+1], blankCells, coordinateToNum, numberCells);
+                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow,   blankCol+1], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow+1, blankCol+1], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow+1, blankCol], blankCells, coordinateToNum, numberCells);
             //top-right
             } else if (blankRow-1 === 0 && blankCol+1 > col){
-                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow, blankCol-1], blankCells, coordinateToNum, numberCells);
+                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow,   blankCol-1], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow+1, blankCol-1], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow+1, blankCol], blankCells, coordinateToNum, numberCells);
             //bottom-left
             } else if (blankCol-1 ===0 && blankRow+1 > row){
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow-1, blankCol], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow-1, blankCol+1], blankCells, coordinateToNum, numberCells);
-                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow, blankCol+1], blankCells, coordinateToNum, numberCells);
+                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow,   blankCol+1], blankCells, coordinateToNum, numberCells);
             //bottom-right
             } else if (blankCol+1 > col && blankRow+1 > row){
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow-1, blankCol], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow-1, blankCol-1], blankCells, coordinateToNum, numberCells);
-                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow, blankCol-1], blankCells, coordinateToNum, numberCells);
+                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow,   blankCol-1], blankCells, coordinateToNum, numberCells);
             //top row excluding the corner ones
             } else if (blankRow-1 === 0){
-                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow, blankCol-1], blankCells, coordinateToNum, numberCells);
-                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow, blankCol+1], blankCells, coordinateToNum, numberCells);
+                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow,   blankCol-1], blankCells, coordinateToNum, numberCells);
+                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow,   blankCol+1], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow+1, blankCol-1], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow+1, blankCol], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow+1, blankCol+1], blankCells, coordinateToNum, numberCells);
@@ -264,20 +301,20 @@ export default function Board({level, mines}){
             } else if (blankCol-1 === 0){
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow-1, blankCol], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow-1, blankCol+1], blankCells, coordinateToNum, numberCells);
-                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow, blankCol+1], blankCells, coordinateToNum, numberCells);
+                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow,   blankCol+1], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow+1, blankCol], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow+1, blankCol+1], blankCells, coordinateToNum, numberCells);
             //last col excluding corners
             } else if (blankCol+1 > col){
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow-1, blankCol], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow-1, blankCol-1], blankCells, coordinateToNum, numberCells);
-                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow, blankCol-1], blankCells, coordinateToNum, numberCells);
+                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow,   blankCol-1], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow+1, blankCol-1], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow+1, blankCol], blankCells, coordinateToNum, numberCells);
             //last row excluding corner ones
             } else if (blankRow+1 > row){
-                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow, blankCol-1], blankCells, coordinateToNum, numberCells);
-                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow, blankCol+1], blankCells, coordinateToNum, numberCells);
+                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow,   blankCol-1], blankCells, coordinateToNum, numberCells);
+                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow,   blankCol+1], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow-1, blankCol-1], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow-1, blankCol], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow-1, blankCol+1], blankCells, coordinateToNum, numberCells);
@@ -286,8 +323,8 @@ export default function Board({level, mines}){
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow-1, blankCol-1], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow-1, blankCol], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow-1, blankCol+1], blankCells, coordinateToNum, numberCells);
-                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow, blankCol-1], blankCells, coordinateToNum, numberCells);
-                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow, blankCol+1], blankCells, coordinateToNum, numberCells);
+                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow,   blankCol-1], blankCells, coordinateToNum, numberCells);
+                numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow,   blankCol+1], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow+1, blankCol-1], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow+1, blankCol], blankCells, coordinateToNum, numberCells);
                 numAndBlankInspector(blankCellFinder,numberedBoard, [blankRow+1, blankCol+1], blankCells, coordinateToNum, numberCells);
@@ -295,10 +332,27 @@ export default function Board({level, mines}){
             j++;
         }
         setBlankArray([...blankArray, ...blankCells]);
-        setNumberArray([...numberArray, ...numberCells]);
-        console.log(blankArray);
-        console.log(numberArray);
-        console.log(numberedCell(2, (obj) => obj));
+        setNumberArray([...numberArray, ...numberCells]);        
+    }
+
+    function gameSuccess(){
+        alert('You Win!!!');
+        setClickable(false);
+    }
+
+    function gameOver(){
+        let mineCells = [];
+        numberedBoard.forEach((val, ind) => {
+            if (val === 'm'){
+                mineCells.push(ind);
+            }
+        });
+        setMineArray(mineCells);
+        setClickable(false);
+    }
+
+    function clickedNumber(id){
+        setClickableArray((preArray) => preArray.filter((item) => item !== id));
     }
 
     return (
@@ -315,6 +369,9 @@ export default function Board({level, mines}){
                             numberStyle={numberedCell}
                             revealed={true}
                             level={level}
+                            onFail={gameOver}
+                            clickable={clickable}
+                            clickedNumber={clickedNumber}
                         /> 
                     );
                 } else if (numberArray.includes(index)){
@@ -328,6 +385,29 @@ export default function Board({level, mines}){
                             numberStyle={numberedCell}
                             revealed={true}
                             level={level}
+                            onFail={gameOver}
+                            clickable={clickable}
+                            clickedNumber={clickedNumber}
+                        />
+                    );
+                } else if (mineArray.includes(index)){
+                    return (
+                        <Cell
+                            key={index}
+                            id={index}
+                            value={value}
+                            onBlank={blankArea}
+                            style={{
+                                backgroundImage: `url(${explosion})`,
+                                backgroundSize: `100% 100%`,
+                                backgroundColor: `yellow`
+                            }}
+                            numberStyle={numberedCell}
+                            revealed={true}
+                            level={level}
+                            onFail={gameOver}
+                            clickable={clickable}
+                            clickedNumber={clickedNumber}
                         />
                     );
                 } else if (index !== 0) {
@@ -340,6 +420,9 @@ export default function Board({level, mines}){
                             numberStyle={numberedCell}
                             revealed={false}
                             level={level}
+                            onFail={gameOver}
+                            clickable={clickable}
+                            clickedNumber={clickedNumber}
                         />
                     );
                 } else {

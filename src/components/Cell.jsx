@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import './Cell.css';
 import redFlagImage from '../images/red-flag.png';
-import explosion from '../images/mine.png';
 
 
-export default function Cell({id, value, onBlank, style, numberStyle, revealed,level}){
+
+export default function Cell({id, value, onBlank, style, numberStyle, revealed, level, onFail, clickable, clickedNumber}){
     const [rightClicked, setRightClicked] = useState(false);
     const [leftClicked, setLeftClicked] = useState(false);
     const [displayImage, setDisplayImage] = useState(null);
@@ -17,7 +17,7 @@ export default function Cell({id, value, onBlank, style, numberStyle, revealed,l
     
     function handleRightClick(e){
         e.preventDefault();
-        if (!leftClicked){
+        if (!leftClicked && clickable){
             if (displayImage === null) {
                 setDisplayImage({
                     backgroundImage: `url(${redFlagImage})`,
@@ -31,18 +31,20 @@ export default function Cell({id, value, onBlank, style, numberStyle, revealed,l
         }
     }
     function handleLeftClick(){
-        if (!rightClicked && !leftClicked){
+        if (!rightClicked && !leftClicked && clickable){
             setLeftClicked(true);
             if (value === 'm'){
-                setDisplayImage({
-                    backgroundImage: `url(${explosion})`,
-                    backgroundSize: `100% 100%`,
-                    backgroundColor: `yellow`
-                });
+                onFail();
+                // setDisplayImage({
+                //     backgroundImage: `url(${explosion})`,
+                //     backgroundSize: `100% 100%`,
+                //     backgroundColor: `yellow`
+                // });
             } else if (value === 'b'){
                 onBlank(id);
             } else {
                 numberStyle(value, setDisplayImage);
+                clickedNumber(id);
             }
         }
     }

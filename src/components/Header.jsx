@@ -1,4 +1,4 @@
-
+import Timer from './Timer.jsx';
 import './Header.css';
 
 export default function Header({difficulty, level}){
@@ -11,9 +11,7 @@ export default function Header({difficulty, level}){
         headerWidth = '720px';
     }
 
-    function handleClick(e){
-        
-    }
+
 
     
 
@@ -24,7 +22,7 @@ export default function Header({difficulty, level}){
                 <option value='medium'>Medium</option>
                 <option value='hard'>Hard</option>
             </select>
-            <button onClick={handleClick}>viewport size</button>
+            <div></div>
         </div>
     )
 }

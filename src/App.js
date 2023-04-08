@@ -21,16 +21,18 @@ function App() {
     }
     return randomNums;
   }
-
+  let cells;
   let mines;
   if (level === 'easy'){
-    mines = randomMines(10, 1, 80);
+    cells = 80;
+    mines = randomMines(10, 1, cells);
   } else if (level === 'medium'){
-    mines = randomMines(40, 1, 252);
+    cells = 252;
+    mines = randomMines(40, 1, cells);
   } else {
-    mines = randomMines(99, 1, 480);
+    cells = 480;
+    mines = randomMines(99, 1, cells);
   } 
-
 
   function handleDifficulty(e){
     const {value} = e.target;
@@ -48,6 +50,7 @@ function App() {
       <Board
         level={level}
         mines={mines}
+        totalCells={cells}
       />
     </div>
   );
