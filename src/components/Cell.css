@@ -1,9 +1,11 @@
 .cell {
-    background-color: #ABC4AA;
+    background-color: #7AA874;
     width: 30px;
     height: 30px;
     display: inline-block;
-    outline: solid;
+    border-width: 1px;
+    border-color: grey;
+    border-style: outset;
 }
 
 .cell:hover {

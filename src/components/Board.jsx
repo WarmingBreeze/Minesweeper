@@ -53,7 +53,6 @@ export default function Board({level, mines, totalCells}){
         }
     },[clickableArray]);
 
-    console.log(clickableArray);
 
     let row;
     let col;
@@ -196,56 +195,64 @@ export default function Board({level, mines, totalCells}){
             return (
                 func({
                     backgroundImage: `url(${one})`,
-                    backgroundSize: `100% 100%`
+                    backgroundSize: `100% 100%`,
+                    backgroundColor: `#C1D5A4`
                 })
             )
         } else if (val === 2){
             return (
                 func({
                     backgroundImage: `url(${two})`,
-                    backgroundSize: `100% 100%`
+                    backgroundSize: `100% 100%`,
+                    backgroundColor: `#C1D5A4`
                 })
             )
         } else if (val === 3){
             return (
                 func({
                     backgroundImage: `url(${three})`,
-                    backgroundSize: `100% 100%`
+                    backgroundSize: `100% 100%`,
+                    backgroundColor: `#C1D5A4`
                 })
             )
         } else if (val === 4){
             return (
                 func({
                     backgroundImage: `url(${four})`,
-                    backgroundSize: `100% 100%`
+                    backgroundSize: `100% 100%`,
+                    backgroundColor: `#C1D5A4`
                 })
             )
         } else if (val === 5){
             return (
                 func({
                     backgroundImage: `url(${five})`,
-                    backgroundSize: `100% 100%`
+                    backgroundSize: `100% 100%`,
+                    backgroundColor: `#C1D5A4`
                 })
             )
         } else if (val === 6){
             return (
                 func({
                     backgroundImage: `url(${six})`,
-                    backgroundSize: `100% 100%`
+                    backgroundSize: `100% 100%`,
+                    backgroundColor: `#C1D5A4`
                 })
             )
         } else if (val === 7){
             return (
                 func({
                     backgroundImage: `url(${seven})`,
-                    backgroundSize: `100% 100%`
+                    backgroundSize: `100% 100%`,
+                    backgroundColor: `#C1D5A4`
                 })
             )
         } else {
             return (
                 func({
                     backgroundImage: `url(${eight})`,
-                    backgroundSize: `100% 100%`
+                    backgroundSize: `100% 100%`,
+                    backgroundColor: `#C1D5A4`
                 })
             )
         }
@@ -365,7 +372,7 @@ export default function Board({level, mines, totalCells}){
                             id={index}
                             value={value}
                             onBlank={blankArea}
-                            style={{backgroundColor: `#F3DEBA`}}
+                            style={{backgroundColor: `#C1D5A4`}}
                             numberStyle={numberedCell}
                             revealed={true}
                             level={level}
@@ -400,7 +407,7 @@ export default function Board({level, mines, totalCells}){
                             style={{
                                 backgroundImage: `url(${explosion})`,
                                 backgroundSize: `100% 100%`,
-                                backgroundColor: `yellow`
+                                backgroundColor: `#FFEE63`
                             }}
                             numberStyle={numberedCell}
                             revealed={true}

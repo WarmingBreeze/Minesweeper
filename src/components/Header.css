@@ -1,11 +1,36 @@
 .header {
-    text-align: center;
     margin: auto;
     height:10vh;
     background-color: #8D7B68;
     outline: solid;
     margin-top: 10px;
     margin-bottom: 5px;
+}
+
+.option {
+    font-size: 1.1rem;
+    text-align: left;
+    font-family: 'McLaren', cursive;
+}
+.menu {
+    font-size: 1.1rem;
+    display: block;
+    font-family: 'McLaren', cursive;
+    position: relative;
+    top: 5px;
+    left: 5px;
+}
+
+.emoji {
+    background-image: url("../images/game.png");
+    height: 50px;
+    width: 50px;
+    background-size: 100% 100%;
+    text-align: center;
+    margin: auto;
+    display: block;
+    position: relative;
+    top: 10px;
 }
 
 @media (max-height: 650px) {
