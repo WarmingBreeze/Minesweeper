@@ -1,12 +1,20 @@
 import './App.css';
 import Header from './components/Header.jsx';
 import Board from './components/Board.jsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 function App() {
-
   const [level, setLevel] = useState('easy');
+  const [status, setStatus] = useState('game');
+
+  useEffect(() =>{
+    setStatus('game');
+  },[level]);
+
+  let cells;
+  let mines = [];
+  let halt;
 
   //generate random numbers to decide which cells hold mines
   function randomMines(n, min, max){
@@ -21,8 +29,8 @@ function App() {
     }
     return randomNums;
   }
-  let cells;
-  let mines;
+
+
   if (level === 'easy'){
     cells = 80;
     mines = randomMines(10, 1, cells);
@@ -32,25 +40,41 @@ function App() {
   } else {
     cells = 480;
     mines = randomMines(99, 1, cells);
-  } 
-
+  }  
+  
   function handleDifficulty(e){
     const {value} = e.target;
     if (level !== value){
       setLevel(value);
     }
   }
+
+  
+  function changeStatus(string){
+    if (string === 'win'){
+      setStatus('win');
+    } else if (string === 'lose'){
+      setStatus('lose')
+    } else {
+      setStatus('game');
+    }
+    halt = true;
+  }
+
   
   return (
     <div id="main">
       <Header
         difficulty={handleDifficulty}
         level={level}
+        status={status}
       />
       <Board
         level={level}
         mines={mines}
         totalCells={cells}
+        onStatus={changeStatus}
+        halt={halt}
       />
     </div>
   );

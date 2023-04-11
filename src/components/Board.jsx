@@ -11,12 +11,12 @@ import seven from '../images/numbers/number-7.png';
 import eight from '../images/numbers/number-8.png';
 import explosion from '../images/mine.png';
 
-export default function Board({level, mines, totalCells}){
+export default function Board({level, mines, totalCells, onStatus, halt}){
     const [blankArray, setBlankArray] = useState([]);
     const [numberArray, setNumberArray] = useState([]);
     const [mineArray, setMineArray] = useState([]);
     const [clickableArray, setClickableArray] = useState(() => {
-        let temp = [];
+        let temp = []; 
         for (let i=1; i<=totalCells; i++){
             if (!(mines.includes(i))){
                 temp.push(i);
@@ -27,20 +27,23 @@ export default function Board({level, mines, totalCells}){
     const [clickable, setClickable] = useState(true);
 
     useEffect(() => {
-        setBlankArray([]);
-        setNumberArray([]);
-        setMineArray([]);
-        setClickable(true);
-        setClickableArray(() => {
-            let temp = [];
-            for (let i=1; i<=totalCells; i++){
-                if (!(mines.includes(i))){
-                    temp.push(i);
+        if (!halt){
+            setBlankArray([]);
+            setNumberArray([]);
+            setMineArray([]);
+            setClickable(true);
+            setClickableArray(() => {
+                let temp = [];
+                for (let i=1; i<=totalCells; i++){
+                    if (!(mines.includes(i))){
+                        temp.push(i);
+                    }
                 }
-            }
-            return temp;
-        })
-        setClickable(true);
+                return temp;
+            })
+            setClickable(true);
+        }
+        console.log(halt);
     }, [level, totalCells, mines]);
 
     useEffect(() =>{
@@ -49,7 +52,8 @@ export default function Board({level, mines, totalCells}){
 
     useEffect(()=>{
         if (clickableArray.length === 0) {
-            gameSuccess();
+            setClickable(false);
+            onStatus('win');
         }
     },[clickableArray]);
 
@@ -62,15 +66,15 @@ export default function Board({level, mines, totalCells}){
     if (level === 'easy') {
         row = 8;
         col = 10;
-        boardWidth = '300px';        
+        boardWidth = '380px';     
     } else if (level === 'medium') {
         row = 14;
         col = 18;
-        boardWidth = '540px';
+        boardWidth = '684px';
     } else {
         row = 20;
         col = 24;
-        boardWidth = '720px';
+        boardWidth = '912px';
     }
 
     for (let i=1; i<=row*col; i++) {
@@ -196,7 +200,8 @@ export default function Board({level, mines, totalCells}){
                 func({
                     backgroundImage: `url(${one})`,
                     backgroundSize: `100% 100%`,
-                    backgroundColor: `#C1D5A4`
+                    backgroundColor: `#C1D5A4`,
+                    borderStyle: `inset`
                 })
             )
         } else if (val === 2){
@@ -204,7 +209,8 @@ export default function Board({level, mines, totalCells}){
                 func({
                     backgroundImage: `url(${two})`,
                     backgroundSize: `100% 100%`,
-                    backgroundColor: `#C1D5A4`
+                    backgroundColor: `#C1D5A4`,
+                    borderStyle: `inset`
                 })
             )
         } else if (val === 3){
@@ -212,7 +218,8 @@ export default function Board({level, mines, totalCells}){
                 func({
                     backgroundImage: `url(${three})`,
                     backgroundSize: `100% 100%`,
-                    backgroundColor: `#C1D5A4`
+                    backgroundColor: `#C1D5A4`,
+                    borderStyle: `inset`
                 })
             )
         } else if (val === 4){
@@ -220,7 +227,8 @@ export default function Board({level, mines, totalCells}){
                 func({
                     backgroundImage: `url(${four})`,
                     backgroundSize: `100% 100%`,
-                    backgroundColor: `#C1D5A4`
+                    backgroundColor: `#C1D5A4`,
+                    borderStyle: `inset`
                 })
             )
         } else if (val === 5){
@@ -228,7 +236,8 @@ export default function Board({level, mines, totalCells}){
                 func({
                     backgroundImage: `url(${five})`,
                     backgroundSize: `100% 100%`,
-                    backgroundColor: `#C1D5A4`
+                    backgroundColor: `#C1D5A4`,
+                    borderStyle: `inset`
                 })
             )
         } else if (val === 6){
@@ -236,7 +245,8 @@ export default function Board({level, mines, totalCells}){
                 func({
                     backgroundImage: `url(${six})`,
                     backgroundSize: `100% 100%`,
-                    backgroundColor: `#C1D5A4`
+                    backgroundColor: `#C1D5A4`,
+                    borderStyle: `inset`
                 })
             )
         } else if (val === 7){
@@ -244,7 +254,8 @@ export default function Board({level, mines, totalCells}){
                 func({
                     backgroundImage: `url(${seven})`,
                     backgroundSize: `100% 100%`,
-                    backgroundColor: `#C1D5A4`
+                    backgroundColor: `#C1D5A4`,
+                    borderStyle: `inset`
                 })
             )
         } else {
@@ -252,7 +263,8 @@ export default function Board({level, mines, totalCells}){
                 func({
                     backgroundImage: `url(${eight})`,
                     backgroundSize: `100% 100%`,
-                    backgroundColor: `#C1D5A4`
+                    backgroundColor: `#C1D5A4`,
+                    borderStyle: `inset`
                 })
             )
         }
@@ -342,11 +354,6 @@ export default function Board({level, mines, totalCells}){
         setNumberArray([...numberArray, ...numberCells]);        
     }
 
-    function gameSuccess(){
-        alert('You Win!!!');
-        setClickable(false);
-    }
-
     function gameOver(){
         let mineCells = [];
         numberedBoard.forEach((val, ind) => {
@@ -356,6 +363,7 @@ export default function Board({level, mines, totalCells}){
         });
         setMineArray(mineCells);
         setClickable(false);
+        onStatus('lose');
     }
 
     function clickedNumber(id){
@@ -372,7 +380,10 @@ export default function Board({level, mines, totalCells}){
                             id={index}
                             value={value}
                             onBlank={blankArea}
-                            style={{backgroundColor: `#C1D5A4`}}
+                            style={{
+                                backgroundColor: `#C1D5A4`,
+                                borderStyle: `inset`
+                            }}
                             numberStyle={numberedCell}
                             revealed={true}
                             level={level}

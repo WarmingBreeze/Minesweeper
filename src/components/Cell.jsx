@@ -35,11 +35,6 @@ export default function Cell({id, value, onBlank, style, numberStyle, revealed, 
             setLeftClicked(true);
             if (value === 'm'){
                 onFail();
-                // setDisplayImage({
-                //     backgroundImage: `url(${explosion})`,
-                //     backgroundSize: `100% 100%`,
-                //     backgroundColor: `yellow`
-                // });
             } else if (value === 'b'){
                 onBlank(id);
             } else {
