@@ -1,6 +1,6 @@
 import Cell from './Cell.jsx';
 import './Board.css';
-import { useEffect, useState } from 'react';
+import {memo, useEffect, useState, useRef } from 'react';
 import one from '../images/numbers/number-1.png';
 import two from '../images/numbers/number-2.png';
 import three from '../images/numbers/number-3.png';
@@ -11,7 +11,7 @@ import seven from '../images/numbers/number-7.png';
 import eight from '../images/numbers/number-8.png';
 import explosion from '../images/mine.png';
 
-export default function Board({level, mines, totalCells, onStatus, halt}){
+function Board({level, mines, totalCells, onStatus, onFlags, onCount}){
     const [blankArray, setBlankArray] = useState([]);
     const [numberArray, setNumberArray] = useState([]);
     const [mineArray, setMineArray] = useState([]);
@@ -24,26 +24,22 @@ export default function Board({level, mines, totalCells, onStatus, halt}){
         }
         return temp;
     });
-    const [clickable, setClickable] = useState(true);
+    const clickable = useRef(true);
 
     useEffect(() => {
-        if (!halt){
-            setBlankArray([]);
-            setNumberArray([]);
-            setMineArray([]);
-            setClickable(true);
-            setClickableArray(() => {
-                let temp = [];
-                for (let i=1; i<=totalCells; i++){
-                    if (!(mines.includes(i))){
-                        temp.push(i);
-                    }
+        setBlankArray([]);
+        setNumberArray([]);
+        setMineArray([]);
+        clickable.current = true;
+        setClickableArray(() => {
+            let temp = [];
+            for (let i=1; i<=totalCells; i++){
+                if (!(mines.includes(i))){
+                    temp.push(i);
                 }
-                return temp;
-            })
-            setClickable(true);
-        }
-        console.log(halt);
+            }
+            return temp;
+        })
     }, [level, totalCells, mines]);
 
     useEffect(() =>{
@@ -52,11 +48,12 @@ export default function Board({level, mines, totalCells, onStatus, halt}){
 
     useEffect(()=>{
         if (clickableArray.length === 0) {
-            setClickable(false);
+            clickable.current = false;
             onStatus('win');
         }
-    },[clickableArray]);
+    },[clickableArray, onStatus]);
 
+    useEffect(()=>console.log('Board re-rendered.'));
 
     let row;
     let col;
@@ -91,7 +88,20 @@ export default function Board({level, mines, totalCells, onStatus, halt}){
             }
         }
     }
-    
+
+    // console.log('*****Board.jsx:');
+    // console.log('level: ' + level);
+    // console.log('mines: ' + mines);
+    // console.log('totalCells: ' + totalCells);
+    // console.log('blankArray: ' + blankArray);
+    // console.log('numberArray: ' + numberArray);
+    // console.log('mineArray: ' + mineArray);
+    // console.log('clickableArray: ' + clickableArray);
+    // console.log('clickable: ' + clickable.current);
+    // console.log('row: ' + row);
+    // console.log('col: ' + col);
+    // console.log('boardWidth: ' + boardWidth);
+    // console.log('numberedBoard: ' + numberedBoard);
 
     function numToCoordinate(num){
         let numRow, numCol;
@@ -362,13 +372,14 @@ export default function Board({level, mines, totalCells, onStatus, halt}){
             }
         });
         setMineArray(mineCells);
-        setClickable(false);
+        clickable.current = false;
         onStatus('lose');
     }
 
     function clickedNumber(id){
         setClickableArray((preArray) => preArray.filter((item) => item !== id));
     }
+
 
     return (
         <div className='board' style={{width: boardWidth}}>
@@ -388,7 +399,7 @@ export default function Board({level, mines, totalCells, onStatus, halt}){
                             revealed={true}
                             level={level}
                             onFail={gameOver}
-                            clickable={clickable}
+                            clickable={clickable.current}
                             clickedNumber={clickedNumber}
                         /> 
                     );
@@ -404,7 +415,7 @@ export default function Board({level, mines, totalCells, onStatus, halt}){
                             revealed={true}
                             level={level}
                             onFail={gameOver}
-                            clickable={clickable}
+                            clickable={clickable.current}
                             clickedNumber={clickedNumber}
                         />
                     );
@@ -424,7 +435,7 @@ export default function Board({level, mines, totalCells, onStatus, halt}){
                             revealed={true}
                             level={level}
                             onFail={gameOver}
-                            clickable={clickable}
+                            clickable={clickable.current}
                             clickedNumber={clickedNumber}
                         />
                     );
@@ -439,8 +450,10 @@ export default function Board({level, mines, totalCells, onStatus, halt}){
                             revealed={false}
                             level={level}
                             onFail={gameOver}
-                            clickable={clickable}
+                            clickable={clickable.current}
                             clickedNumber={clickedNumber}
+                            onFlags={onFlags}
+                            onCount={onCount}
                         />
                     );
                 } else {
@@ -450,3 +463,5 @@ export default function Board({level, mines, totalCells, onStatus, halt}){
         </div>
     )
 }
+
+export default memo(Board);
