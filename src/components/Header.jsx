@@ -2,11 +2,21 @@ import './Header.css';
 import win from '../images/win.png';
 import game from '../images/game.png';
 import lose from '../images/failed.png';
-import {useState, useRef } from 'react';
+import {useState, useRef, useEffect } from 'react';
 
 export default function Header({difficulty, level, status, flags}){    
     const [count, setCount] = useState(0);
     const intervalId = useRef(null);
+
+    useEffect(() => {
+        document.getElementsByClassName('board')[0].addEventListener('click', handleCount);
+    }, []);
+
+    useEffect(() => {
+        setCount(0);
+        intervalId.current = null;
+    }, [level]);
+    
 
     let headerWidth;
     if (level === 'easy'){
@@ -35,10 +45,12 @@ export default function Header({difficulty, level, status, flags}){
     }
 
     function handleCount(){
-      const id = setInterval(() => {
-          setCount((count) => count+1);
-      }, 1000);
-      intervalId.current = id;      
+        if (intervalId.current === null){
+            const id = setInterval(() => {
+                setCount((count) => count+1);
+            }, 1000);
+            intervalId.current = id;
+        }              
     }
 
     function handleStop(){

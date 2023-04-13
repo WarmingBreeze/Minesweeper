@@ -1,15 +1,13 @@
 import './App.css';
 import Header from './components/Header.jsx';
 import Board from './components/Board.jsx';
-import { useEffect, useState, useMemo, useRef, memo} from 'react';
+import { useEffect, useState, useMemo, memo} from 'react';
 
 
 function App() {
   const [status, setStatus] = useState('game');
   const [level, setLevel] = useState('easy');
   const [numFlags, setNumFlags] = useState(10);
-  //const [count, setCount] = useState(0);
-  //const intervalId = useRef(null);
 
   useEffect(() =>{
     setStatus('game');
@@ -81,18 +79,6 @@ function App() {
     }
     
   }
-
-
-  // function handleCount(){
-  //   const id = setInterval(() => {
-  //       setCount((count) => count+1);
-  //   }, 1000);
-  //   intervalId.current = id;      
-  // }
-
-  // function handleStop(){
-  //     clearInterval(intervalId.current);
-  // }
   
   return (
     <div id="main">
@@ -108,8 +94,6 @@ function App() {
         totalCells={cells}
         onStatus={changeStatus}
         onFlags={flagsCount}
-        //onCount={handleCount}
-        //onStop={handleStop}
       />
     </div>
   );
