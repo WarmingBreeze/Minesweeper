@@ -52,7 +52,7 @@
     background-size: 100% 100%;
     display: inline-block;
     position: relative;
-    right: 8px;
+    right: 6px;
 }
 
 .timer {
@@ -69,7 +69,7 @@
     display: inline-block;
     line-height: 0;
     position: relative;
-    left: 50px;
+    left: 40px;
 }
 
 /* @media (max-height: 650px) {

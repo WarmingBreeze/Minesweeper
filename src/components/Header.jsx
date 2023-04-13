@@ -2,10 +2,11 @@ import './Header.css';
 import win from '../images/win.png';
 import game from '../images/game.png';
 import lose from '../images/failed.png';
-import {useState, useRef, useEffect } from 'react';
+import {useState, useRef, useEffect} from 'react';
 
 export default function Header({difficulty, level, status, flags}){    
     const [count, setCount] = useState(0);
+    
     const intervalId = useRef(null);
 
     useEffect(() => {
@@ -16,6 +17,12 @@ export default function Header({difficulty, level, status, flags}){
         setCount(0);
         intervalId.current = null;
     }, [level]);
+
+    useEffect(() => {
+        if (count >= 999){
+            handleStop();
+        }
+    });
     
 
     let headerWidth;
@@ -56,6 +63,8 @@ export default function Header({difficulty, level, status, flags}){
     function handleStop(){
         clearInterval(intervalId.current);
     }
+
+    
 
     return (
         <div className='header' style={{width: headerWidth}}>
