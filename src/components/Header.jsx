@@ -2,28 +2,11 @@ import './Header.css';
 import win from '../images/win.png';
 import game from '../images/game.png';
 import lose from '../images/failed.png';
-import { useEffect, useState, useRef } from 'react';
+import {useState, useRef } from 'react';
 
 export default function Header({difficulty, level, status, flags}){    
     const [count, setCount] = useState(0);
     const intervalId = useRef(null);
-
-    useEffect(()=>{
-        console.log('Create: ' + intervalId.current);
-        if (intervalId.current === null){
-            console.log('inside of statement!');
-            document.getElementsByClassName('board')[0].addEventListener('click', handleCount);
-        }
-    },[]);
-
-    useEffect(()=>{
-        console.log('Delete: ' + intervalId.current);
-        if (intervalId.current !== null){
-            console.log('inside of statement!');
-            document.getElementsByClassName('board')[0].removeEventListener('click', handleCount);
-        }
-    });
-        
 
     let headerWidth;
     if (level === 'easy'){
